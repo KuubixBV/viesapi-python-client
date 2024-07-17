@@ -19,19 +19,26 @@ def main(Id, Key, euvat):
     # Check if account is returned
     if not account:
         exit()
+
+    # Get VAT data
+    vies_data_response = viesapi.get_vies_data(euvat)
+
+    # Check if vies response is returned
+    if not vies_data_response:
+        exit()
     
     # Return data
-    account_data = {
-        "uid": account.uid,
-        "country_code": account.country_code,
-        "vat_number": account.vat_number,
-        "valid": account.valid,
-        "trader_name": account.trader_name,
-        "trader_company_type": account.trader_company_type,
-        "trader_address": account.trader_address,
-        "id": account.id,
-        "date": account.date,
-        "source": account.source,
+    vies_data = {
+        "uid": vies_data_response.uid,
+        "country_code": vies_data_response.country_code,
+        "vat_number": vies_data_response.vat_number,
+        "valid": vies_data_response.valid,
+        "trader_name": vies_data_response.trader_name,
+        "trader_company_type": vies_data_response.trader_company_type,
+        "trader_address": vies_data_response.trader_address,
+        "id": vies_data_response.id,
+        "date": vies_data_response.date,
+        "source": vies_data_response.source,
         "updated": datetime.datetime.now().strftime('%d/%m/%Y %H:%M:%S')
     }
 
@@ -43,7 +50,7 @@ def main(Id, Key, euvat):
 
     # Save eID contact as JSON
     with open(file_path, "w") as VIES_file:
-        json.dump(account_data, VIES_file, indent=4)
+        json.dump(vies_data, VIES_file, indent=4)
 
 if __name__ == "__main__":
 
